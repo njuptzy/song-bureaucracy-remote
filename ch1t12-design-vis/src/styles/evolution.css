@@ -1,0 +1,405 @@
+.dynamic-evolution-layer text {
+  fill: #351704;
+  font-family: FZQINGKBYSS-M--GB1-0, FZQingKeBenYueSongS, "Songti SC", serif;
+  letter-spacing: 0;
+}
+
+.dynamic-evolution-layer .evolution-section-heading {
+  font-size: 24.45px;
+  font-weight: 500;
+}
+
+.dynamic-evolution-layer .evolution-selector-copy {
+  font-size: 15px;
+}
+
+.dynamic-evolution-layer .evolution-selector-count,
+.dynamic-evolution-layer .evolution-axis-label,
+.dynamic-evolution-layer .evolution-event-year,
+.dynamic-evolution-layer .evolution-offaxis-heading {
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 10px;
+}
+
+.dynamic-evolution-layer .evolution-legend-title {
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 11px;
+}
+
+.dynamic-evolution-layer .evolution-legend-label {
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 9.5px;
+}
+
+.dynamic-evolution-layer .evolution-selected-year-label {
+  fill: #866d6d;
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 10.5px;
+  paint-order: stroke;
+  stroke: #f5f3ec;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.dynamic-evolution-layer .evolution-legend-item {
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-selector-node-label {
+  font-size: 12px;
+  dominant-baseline: central;
+}
+
+.dynamic-evolution-layer .evolution-view-heading {
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.dynamic-evolution-layer .evolution-view-subheading {
+  fill: #756156;
+  font-size: 14px;
+}
+
+.dynamic-evolution-layer .evolution-entry-context {
+  fill: #756156;
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 11px;
+}
+
+.dynamic-evolution-layer .evolution-entry-year {
+  opacity: 0.78;
+}
+
+.dynamic-evolution-layer .evolution-entry-year-label {
+  fill: #918069;
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 9px;
+  paint-order: stroke;
+  stroke: #f5f3ec;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.dynamic-evolution-layer .evolution-selection-actions {
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-selection-actions-heading {
+  fill: #866d6d;
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 10px;
+}
+
+.dynamic-evolution-layer .evolution-selection-action {
+  pointer-events: all;
+}
+
+.dynamic-evolution-layer .evolution-selection-action-surface {
+  fill: #a5a68d;
+  fill-opacity: 0;
+  stroke: #563905;
+  stroke-opacity: 0.42;
+  stroke-width: 0.78px;
+}
+
+.dynamic-evolution-layer .evolution-selection-action-label {
+  fill: #563905;
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 10px;
+}
+
+.dynamic-evolution-layer .evolution-selection-status-label {
+  fill: #866d6d;
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 10px;
+  font-style: italic;
+}
+
+.dynamic-evolution-layer .evolution-selection-action:hover .evolution-selection-action-surface,
+.dynamic-evolution-layer .evolution-selection-action:focus-visible .evolution-selection-action-surface {
+  fill: #a5a68d;
+  fill-opacity: 0.18;
+  stroke: #563905;
+  stroke-opacity: 0.82;
+  stroke-width: 1px;
+}
+
+.dynamic-evolution-layer .evolution-lane-pager-label {
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 10.5px;
+}
+
+.dynamic-evolution-layer .evolution-lane-pager-button.is-disabled {
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-lane-title {
+  font-size: 11px;
+  dominant-baseline: central;
+}
+
+.dynamic-evolution-layer .evolution-lane-anomaly-label {
+  fill: #866d6d;
+  font-size: 8.2px;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-event-label {
+  font-size: 8px;
+  dominant-baseline: central;
+}
+
+.dynamic-evolution-layer .evolution-event-stem,
+.dynamic-evolution-layer .evolution-event-anchor {
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-relation-label {
+  paint-order: stroke;
+  stroke: #f5f3ec;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  font-size: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 90ms ease-out;
+}
+
+.dynamic-evolution-layer .evolution-relation-label-leader {
+  opacity: 0;
+  transition: opacity 90ms ease-out;
+}
+
+.dynamic-evolution-layer .evolution-relation:hover .evolution-relation-label,
+.dynamic-evolution-layer .evolution-relation:focus-within .evolution-relation-label,
+.dynamic-evolution-layer .evolution-relation-group:hover .evolution-relation-label,
+.dynamic-evolution-layer .evolution-relation-group:focus-within .evolution-relation-label,
+.dynamic-evolution-layer .evolution-fan-group:hover .evolution-relation-label,
+.dynamic-evolution-layer .evolution-fan-group:focus-within .evolution-relation-label,
+.dynamic-evolution-layer .evolution-relation:hover .evolution-relation-label-leader,
+.dynamic-evolution-layer .evolution-relation:focus-within .evolution-relation-label-leader,
+.dynamic-evolution-layer .evolution-relation-group:hover .evolution-relation-label-leader,
+.dynamic-evolution-layer .evolution-relation-group:focus-within .evolution-relation-label-leader,
+.dynamic-evolution-layer .evolution-fan-group:hover .evolution-relation-label-leader,
+.dynamic-evolution-layer .evolution-fan-group:focus-within .evolution-relation-label-leader {
+  opacity: 1;
+}
+
+.dynamic-evolution-layer .evolution-relation-overflow-marker {
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-relation-overflow-glyph {
+  fill: #756156;
+  font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-empty {
+  fill: #756156;
+  font-size: 15px;
+}
+
+.dynamic-evolution-layer [role="button"]:focus {
+  outline: none;
+}
+
+.dynamic-evolution-layer [role="button"]:focus-visible {
+  filter: drop-shadow(0 0 1.5px rgba(53, 23, 4, 0.72));
+}
+
+.dynamic-evolution-layer .evolution-event:hover,
+.dynamic-evolution-layer .evolution-relation:hover,
+.dynamic-evolution-layer .evolution-relation-group:hover,
+.dynamic-evolution-layer .evolution-lane-label:hover,
+.dynamic-evolution-layer .evolution-selector-node:hover,
+.dynamic-evolution-layer .evolution-selector-add:hover {
+  filter: drop-shadow(0 1px 1.5px rgba(53, 23, 4, 0.34));
+}
+
+.dynamic-evolution-layer .evolution-event.is-dimmed,
+.dynamic-evolution-layer .evolution-offaxis-event.is-dimmed,
+.dynamic-evolution-layer .evolution-relation.is-dimmed,
+.dynamic-evolution-layer .evolution-relation-group.is-dimmed,
+.dynamic-evolution-layer .evolution-fan-group.is-dimmed,
+.dynamic-evolution-layer .evolution-event-stem-group.is-dimmed,
+.dynamic-evolution-layer .evolution-lifecycle-segment.is-dimmed {
+  opacity: 0.16;
+}
+
+.dynamic-evolution-layer .evolution-event.is-dimmed:hover,
+.dynamic-evolution-layer .evolution-offaxis-event.is-dimmed:hover,
+.dynamic-evolution-layer .evolution-relation.is-dimmed:hover,
+.dynamic-evolution-layer .evolution-relation-group.is-dimmed:hover,
+.dynamic-evolution-layer .evolution-fan-group.is-dimmed:hover {
+  opacity: 0.52;
+}
+
+/* Make the fuzzy-interval bracket discoverable: hovering its event darkens
+   the dashed bracket below the lane. */
+.dynamic-evolution-layer .evolution-event-bounded-span {
+  pointer-events: none;
+}
+
+.dynamic-evolution-layer .evolution-event:hover .evolution-event-bounded-span {
+  stroke: #563905;
+  stroke-width: 1.5;
+}
+
+.dynamic-evolution-layer .evolution-event.is-selected .evolution-event-bounded-span {
+  stroke: #866d6d;
+  stroke-width: 2.4;
+}
+
+.dynamic-evolution-layer .is-revision-added {
+  filter: drop-shadow(0 0 2px rgba(74, 118, 92, 0.72));
+}
+
+.dynamic-evolution-layer .is-revision-added > circle,
+.dynamic-evolution-layer .is-revision-added > path:not([stroke="transparent"]) {
+  stroke: #4a765c;
+  stroke-width: 1.8px;
+}
+
+.dynamic-evolution-layer .is-revision-modified {
+  filter: drop-shadow(0 0 2px rgba(148, 102, 40, 0.62));
+}
+
+.dynamic-evolution-layer .is-revision-modified > circle,
+.dynamic-evolution-layer .is-revision-modified > path:not([stroke="transparent"]) {
+  stroke: #946628;
+  stroke-width: 1.8px;
+}
+
+.dynamic-evolution-layer .is-revision-before,
+.dynamic-evolution-layer .is-revision-deleted {
+  opacity: 0.28;
+}
+
+.dynamic-evolution-layer .is-revision-before > path,
+.dynamic-evolution-layer .is-revision-before > circle,
+.dynamic-evolution-layer .is-revision-deleted > path,
+.dynamic-evolution-layer .is-revision-deleted > circle {
+  stroke-dasharray: 3 3;
+}
+
+.dynamic-evolution-layer .is-revision-deleted {
+  filter: grayscale(0.8);
+}
+
+.evolution-search-surface {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(86, 57, 5, 0.85);
+  border-radius: 2px;
+  background: rgba(245, 243, 236, 0.98);
+  color: #351704;
+  font-family: FZQINGKBYSS-M--GB1-0, FZQingKeBenYueSongS, "Songti SC", serif;
+}
+
+.evolution-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  align-items: center;
+  border-bottom: 1px solid rgba(86, 57, 5, 0.42);
+}
+
+.evolution-search-input {
+  min-width: 0;
+  height: 31px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #351704;
+  padding: 4px 9px;
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.evolution-search-input::placeholder {
+  color: #756156;
+  opacity: 1;
+}
+
+.evolution-search-input:focus-visible {
+  box-shadow: inset 0 0 0 1px rgba(86, 57, 5, 0.55);
+}
+
+.evolution-search-close {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.evolution-search-close svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: #563905;
+  stroke-linecap: round;
+  stroke-width: 1.2;
+}
+
+.evolution-search-close:focus-visible {
+  outline: 1px dashed #563905;
+  outline-offset: -3px;
+}
+
+.evolution-search-results {
+  height: 117px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.evolution-search-result {
+  width: 100%;
+  min-height: 27px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-bottom: 1px solid rgba(145, 128, 105, 0.22);
+  background: transparent;
+  color: #351704;
+  padding: 4px 9px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.evolution-search-result:hover,
+.evolution-search-result:focus-visible {
+  outline: 0;
+  background: rgba(165, 166, 141, 0.25);
+}
+
+.evolution-search-result small {
+  color: #756156;
+  font-size: 10px;
+}
+
+.evolution-search-empty {
+  margin: 0;
+  padding: 12px 9px;
+  color: #756156;
+  font-size: 12px;
+}
+
+.evolution-view-control:focus {
+  outline: none;
+}
+
+.evolution-view-control:focus-visible rect {
+  stroke-width: 1.35;
+  stroke-dasharray: 3 2;
+}

@@ -1,0 +1,40 @@
+:root {
+  /* 取自设计稿 SVG（字体转曲画板）的实际用色 */
+  --ink: #351704; /* 深褐：标题文字、压深 */
+  --ink-2: #563905; /* 暗褐：正文文字、细线 */
+  --olive: #918069; /* 橄榄灰：书脊描边 */
+  --olive-fill: #a5a68d; /* 灰绿：节点顶签/选中填充 */
+  --mauve: #866d6d; /* 灰紫褐：阶官 */
+  --taupe: #756156; /* 灰褐：次级描边 */
+  --gray: #acacac;
+  --paper: #f5f3ec;
+  --paper-deep: #eceade;
+  --panel: #fefefe;
+  --line: rgba(86, 57, 5, 0.35);
+  --font-design: "Songti SC", "STSong", "SimSun", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  overscroll-behavior-x: none;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-design);
+  overflow: hidden;
+}
+
+button,
+select,
+input {
+  font-family: var(--font-design);
+}
