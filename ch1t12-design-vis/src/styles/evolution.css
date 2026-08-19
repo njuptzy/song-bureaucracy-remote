@@ -23,12 +23,12 @@
 
 .dynamic-evolution-layer .evolution-legend-title {
   font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .dynamic-evolution-layer .evolution-legend-label {
   font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
-  font-size: 9.5px;
+  font-size: 13px;
 }
 
 .dynamic-evolution-layer .evolution-selected-year-label {
@@ -51,7 +51,7 @@
 }
 
 .dynamic-evolution-layer .evolution-view-heading {
-  font-size: 23px;
+  font-size: 27px;
   font-weight: 500;
 }
 
@@ -63,7 +63,7 @@
 .dynamic-evolution-layer .evolution-entry-context {
   fill: #756156;
   font-family: AdobeSongStd-Light-GBpc-EUC-H, "Songti SC", serif;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .dynamic-evolution-layer .evolution-entry-year {
@@ -134,7 +134,7 @@
 }
 
 .dynamic-evolution-layer .evolution-lane-title {
-  font-size: 11px;
+  font-size: 14px;
   dominant-baseline: central;
 }
 

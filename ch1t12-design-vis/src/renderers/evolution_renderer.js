@@ -515,49 +515,49 @@ function renderEvolutionLegend(parent, layout) {
     const sample = svgElement("g", { class: "evolution-legend-item" });
     draw(sample, itemX);
     appendText(sample, label, {
-      x: itemX + 13,
+      x: itemX + 16,
       y: rowY + 3,
       class: "evolution-legend-label",
     });
     group.appendChild(sample);
   };
-  item(x + 34, "普通记载", (sample, itemX) => {
+  item(x + 40, "普通记载", (sample, itemX) => {
     sample.appendChild(svgElement("circle", {
       cx: itemX,
       cy: rowY,
-      r: 2.6,
+      r: 3.5,
       fill: COLORS.paper,
       stroke: COLORS.line,
       "stroke-width": 0.9,
     }));
   });
-  item(x + 99, "建置", (sample, itemX) => {
+  item(x + 118, "建置", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
-      d: `M${itemX} ${rowY - 4.8}L${itemX + 4.8} ${rowY + 3.8}H${itemX - 4.8}Z`,
+      d: `M${itemX} ${rowY - 6.2}L${itemX + 6.2} ${rowY + 5}H${itemX - 6.2}Z`,
       fill: COLORS.line,
       stroke: COLORS.line,
       "stroke-width": 1,
       "stroke-linejoin": "round",
     }));
   });
-  item(x + 148, "罢置", (sample, itemX) => {
+  item(x + 175, "罢置", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
-      d: `M${itemX} ${rowY + 4.8}L${itemX + 4.8} ${rowY - 3.8}H${itemX - 4.8}Z`,
+      d: `M${itemX} ${rowY + 6.2}L${itemX + 6.2} ${rowY - 5}H${itemX - 6.2}Z`,
       fill: COLORS.abolish,
       stroke: COLORS.abolish,
       "stroke-width": 1,
       "stroke-linejoin": "round",
     }));
   });
-  item(x + 210, "改隶事件", (sample, itemX) => {
+  item(x + 248, "改隶事件", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
-      d: `M${itemX} ${rowY - 4.6}L${itemX + 4.6} ${rowY}L${itemX} ${rowY + 4.6}L${itemX - 4.6} ${rowY}Z`,
+      d: `M${itemX} ${rowY - 6}L${itemX + 6} ${rowY}L${itemX} ${rowY + 6}L${itemX - 6} ${rowY}Z`,
       fill: COLORS.paper,
       stroke: COLORS.selected,
       "stroke-width": 1.1,
     }));
   });
-  item(x + 282, "时间范围", (sample, itemX) => {
+  item(x + 332, "时间范围", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
       d: `M${itemX - 6} ${rowY + 3}V${rowY - 4}H${itemX + 6}V${rowY + 3}`,
       fill: "none",
@@ -565,7 +565,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-width": 0.9,
     }));
   });
-  item(x + 350, "模糊纪年区间", (sample, itemX) => {
+  item(x + 412, "模糊纪年区间", (sample, itemX) => {
     sample.appendChild(svgElement("line", {
       x1: itemX - 7, y1: rowY + 2, x2: itemX + 7, y2: rowY + 2,
       stroke: COLORS.olive,
