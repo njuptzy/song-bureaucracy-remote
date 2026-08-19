@@ -531,7 +531,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-width": 0.9,
     }));
   });
-  item(x + 118, "建置", (sample, itemX) => {
+  item(x + 120, "建置", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
       d: `M${itemX} ${rowY - 6.2}L${itemX + 6.2} ${rowY + 5}H${itemX - 6.2}Z`,
       fill: COLORS.line,
@@ -540,7 +540,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-linejoin": "round",
     }));
   });
-  item(x + 175, "罢置", (sample, itemX) => {
+  item(x + 174, "罢置", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
       d: `M${itemX} ${rowY + 6.2}L${itemX + 6.2} ${rowY - 5}H${itemX - 6.2}Z`,
       fill: COLORS.abolish,
@@ -549,7 +549,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-linejoin": "round",
     }));
   });
-  item(x + 248, "改隶事件", (sample, itemX) => {
+  item(x + 228, "改隶事件", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
       d: `M${itemX} ${rowY - 6}L${itemX + 6} ${rowY}L${itemX} ${rowY + 6}L${itemX - 6} ${rowY}Z`,
       fill: COLORS.paper,
@@ -557,7 +557,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-width": 1.1,
     }));
   });
-  item(x + 332, "时间范围", (sample, itemX) => {
+  item(x + 308, "时间范围", (sample, itemX) => {
     sample.appendChild(svgElement("path", {
       d: `M${itemX - 6} ${rowY + 3}V${rowY - 4}H${itemX + 6}V${rowY + 3}`,
       fill: "none",
@@ -565,7 +565,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-width": 0.9,
     }));
   });
-  item(x + 412, "模糊纪年区间", (sample, itemX) => {
+  item(x + 388, "模糊纪年区间", (sample, itemX) => {
     sample.appendChild(svgElement("line", {
       x1: itemX - 7, y1: rowY + 2, x2: itemX + 7, y2: rowY + 2,
       stroke: COLORS.olive,
@@ -579,7 +579,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-width": 1.1,
     }));
   });
-  item(x + 440, "演变关系", (sample, itemX) => {
+  item(x + 494, "演变关系", (sample, itemX) => {
     sample.appendChild(svgElement("line", {
       x1: itemX - 7,
       y1: rowY,
@@ -590,7 +590,7 @@ function renderEvolutionLegend(parent, layout) {
       "marker-end": "url(#evolution-relation-arrow)",
     }));
   });
-  item(x + 508, "存续段", (sample, itemX) => {
+  item(x + 574, "存续段", (sample, itemX) => {
     sample.appendChild(svgElement("line", {
       x1: itemX - 7,
       y1: rowY,
@@ -600,7 +600,7 @@ function renderEvolutionLegend(parent, layout) {
       "stroke-width": 2,
     }));
   });
-  item(x + 566, "密集点错层回指年份", (sample, itemX) => {
+  item(x + 641, "密集点错层回指年份", (sample, itemX) => {
     sample.appendChild(svgElement("line", {
       x1: itemX - 7,
       y1: rowY + 3,
