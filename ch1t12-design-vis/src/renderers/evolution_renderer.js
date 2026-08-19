@@ -109,6 +109,17 @@ function appendVerticalText(parent, text, attrs = {}, options = {}) {
   return element;
 }
 
+export function evolutionLaneTitleMetrics(bodyTop, bodyBottom, fontSize = 14) {
+  const availableHeight = Math.max(0, bodyBottom - bodyTop);
+  // 每个汉字至少占据自身字号并保留少量呼吸空间，避免字号放大后
+  // 仍被旧的 10.5px 步进压叠在一起。
+  const pitch = fontSize + 2;
+  return {
+    pitch,
+    maxChars: Math.max(2, Math.floor(Math.max(0, availableHeight - 8) / pitch) + 1),
+  };
+}
+
 function makeInteractive(element, label, activate) {
   element.setAttribute("role", "button");
   element.setAttribute("tabindex", "0");
@@ -697,8 +708,9 @@ function renderLaneLabel(parent, lane, selected, onSelectEntity, lanePitch) {
   const bodyBottom = lane.type === "官职"
     ? y + (template.body.y + template.body.height - template.bounds.y) * scale
     : y + height;
-  const textPitch = Math.min(10.5, Math.max(8, (bodyBottom - bodyTop - 6) / 6));
-  const maxChars = Math.max(2, Math.floor((bodyBottom - bodyTop - 8) / textPitch) + 1);
+  const { pitch: textPitch, maxChars } = evolutionLaneTitleMetrics(
+    bodyTop, bodyBottom,
+  );
   const displayTitle = shortened(lane.title, maxChars);
   const textHeight = Math.max(0, (Array.from(displayTitle).length - 1) * textPitch);
   appendVerticalText(group, displayTitle, {
