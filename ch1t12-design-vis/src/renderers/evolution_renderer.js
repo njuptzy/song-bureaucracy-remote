@@ -20,6 +20,13 @@ const COLORS = {
   abolish: "#a0432e",
 };
 
+export function evolutionEventIconSize(iconType, selected = false) {
+  const emphasis = selected ? 1 : 0;
+  if (iconType === "affiliation_change") return 6 + emphasis;
+  if (iconType === "establish" || iconType === "abolish") return 6.2 + emphasis;
+  return 3.5 + emphasis;
+}
+
 /**
  * Single visual weight for every evolution relation stroke — single relations
  * and fan branches alike. Unselected lines stay very light (0.35) so they
@@ -536,15 +543,16 @@ function renderEvolutionLegend(parent, layout) {
     sample.appendChild(svgElement("circle", {
       cx: itemX,
       cy: rowY,
-      r: 3.5,
+      r: evolutionEventIconSize("record"),
       fill: COLORS.paper,
       stroke: COLORS.line,
       "stroke-width": 0.9,
     }));
   });
   item(x + 120, "建置", (sample, itemX) => {
+    const size = evolutionEventIconSize("establish");
     sample.appendChild(svgElement("path", {
-      d: `M${itemX} ${rowY - 6.2}L${itemX + 6.2} ${rowY + 5}H${itemX - 6.2}Z`,
+      d: `M${itemX} ${rowY - size}L${itemX + size} ${rowY + size * (5 / 6.2)}H${itemX - size}Z`,
       fill: COLORS.line,
       stroke: COLORS.line,
       "stroke-width": 1,
@@ -552,8 +560,9 @@ function renderEvolutionLegend(parent, layout) {
     }));
   });
   item(x + 174, "罢置", (sample, itemX) => {
+    const size = evolutionEventIconSize("abolish");
     sample.appendChild(svgElement("path", {
-      d: `M${itemX} ${rowY + 6.2}L${itemX + 6.2} ${rowY - 5}H${itemX - 6.2}Z`,
+      d: `M${itemX} ${rowY + size}L${itemX + size} ${rowY - size * (5 / 6.2)}H${itemX - size}Z`,
       fill: COLORS.abolish,
       stroke: COLORS.abolish,
       "stroke-width": 1,
@@ -561,8 +570,9 @@ function renderEvolutionLegend(parent, layout) {
     }));
   });
   item(x + 228, "改隶事件", (sample, itemX) => {
+    const size = evolutionEventIconSize("affiliation_change");
     sample.appendChild(svgElement("path", {
-      d: `M${itemX} ${rowY - 6}L${itemX + 6} ${rowY}L${itemX} ${rowY + 6}L${itemX - 6} ${rowY}Z`,
+      d: `M${itemX} ${rowY - size}L${itemX + size} ${rowY}L${itemX} ${rowY + size}L${itemX - size} ${rowY}Z`,
       fill: COLORS.paper,
       stroke: COLORS.selected,
       "stroke-width": 1.1,
@@ -834,7 +844,7 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     if (!degenerate) {
       // The icon represents the whole fuzzy interval, not its upper bound.
       // Keep the bracket detached and point its centre back to a displaced icon.
-      const spanY = y + 10;
+      const spanY = y + 14;
       const middleX = (startX + endX) / 2;
       group.appendChild(svgElement("line", {
         class: "evolution-event-bounded-span",
@@ -845,22 +855,22 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
       }));
       group.appendChild(svgElement("path", {
         class: "evolution-event-bounded-span",
-        d: `M${startX} ${y + 6.5}V${spanY}M${endX} ${y + 6.5}V${spanY}`,
+        d: `M${startX} ${y + 8.5}V${spanY}M${endX} ${y + 8.5}V${spanY}`,
         fill: "none",
         stroke: COLORS.olive,
         "stroke-width": 1.1,
       }));
       group.appendChild(svgElement("line", {
         class: "evolution-event-range-link",
-        x1: x, y1: y + 5.8, x2: middleX, y2: spanY - 1.5,
+        x1: x, y1: y + 7.8, x2: middleX, y2: spanY - 2,
         stroke: COLORS.olive,
         "stroke-width": 0.65,
         "stroke-opacity": 0.78,
         "pointer-events": "none",
       }));
       group.appendChild(svgElement("rect", {
-        x: Math.min(startX, endX), y: y + 5.5,
-        width: Math.max(3, Math.abs(endX - startX)), height: 5.5,
+        x: Math.min(startX, endX), y: y + 8,
+        width: Math.max(3, Math.abs(endX - startX)), height: 6,
         fill: "transparent", "pointer-events": "all",
       }));
     }
@@ -869,7 +879,7 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     const startX = event.rangeStartX ?? event.baseX;
     const endX = event.rangeEndX ?? event.baseX;
     group.appendChild(svgElement("path", {
-      d: `M${startX} ${y - 13}V${y - 20}H${endX}V${y - 13}`,
+      d: `M${startX} ${y - 15}V${y - 23}H${endX}V${y - 15}`,
       fill: "none", stroke: COLORS.olive, "stroke-width": 0.8,
     }));
     // The mark describes the complete period, so its leader points to the
@@ -877,13 +887,14 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     const middleX = (startX + endX) / 2;
     group.appendChild(svgElement("line", {
       class: "evolution-event-range-link",
-      x1: x, y1: y - 5.8, x2: middleX, y2: y - 11.5,
+      x1: x, y1: y - 7.8, x2: middleX, y2: y - 13.5,
       stroke: COLORS.olive, "stroke-width": 0.65, "stroke-opacity": 0.85,
       "pointer-events": "none",
     }));
   }
+  const iconSize = evolutionEventIconSize(iconType, selected);
   if (iconType === "affiliation_change") {
-    const size = selected ? 5.5 : 4.6;
+    const size = iconSize;
     group.appendChild(svgElement("path", {
       d: `M${x} ${y - size}L${x + size} ${y}L${x} ${y + size}L${x - size} ${y}Z`,
       fill: selected ? COLORS.selected : COLORS.paper,
@@ -895,9 +906,9 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     // 建置/罢置用一对镜像实心三角形：建置 = 墨色正立三角（立起来），
     // 罢置 = 赭红倒三角（裁撤）；选中只换颜色和尺寸，不改变形状。
     const up = iconType === "establish";
-    const size = selected ? 5.6 : 4.8;
+    const size = iconSize;
     const apexY = up ? y - size : y + size;
-    const baseY = up ? y + size * 0.79 : y - size * 0.79;
+    const baseY = up ? y + size * (5 / 6.2) : y - size * (5 / 6.2);
     const color = selected ? COLORS.selected : (up ? COLORS.line : COLORS.abolish);
     group.appendChild(svgElement("path", {
       d: `M${x} ${apexY}L${x + size} ${baseY}H${x - size}Z`,
@@ -908,7 +919,7 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     }));
   } else {
     group.appendChild(svgElement("circle", {
-      cx: x, cy: y, r: selected ? 4.2 : 2.6,
+      cx: x, cy: y, r: iconSize,
       fill: selected ? COLORS.selected : COLORS.paper,
       stroke: selected ? COLORS.selected : COLORS.line,
       "stroke-width": selected ? 1.2 : 1,
@@ -918,7 +929,7 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
   // Selection feedback stays on the mark itself; details live in the left
   // panel, with no additional on-canvas callout.
   group.appendChild(svgElement("circle", {
-    cx: x, cy: y, r: event.displaced ? 5.5 : 10,
+    cx: x, cy: y, r: Math.max(event.displaced ? 9 : 10, iconSize + 3),
     fill: "transparent", "pointer-events": "all",
   }));
   addTitle(group, eventDescription(event));
@@ -928,16 +939,16 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
 
 function endpointClearance(point, arrowhead = false) {
   if (point?.timepointId == null) return 0;
-  if (point.iconType === "affiliation_change") return 5.2;
+  if (point.iconType === "affiliation_change") return 6.6;
   const triangle = ["establish", "abolish"].includes(point.iconType);
   // The endpoint is the arrow tip / relation stroke endpoint, so clearance
   // should follow the visible glyph edge instead of leaving a large dead gap.
-  // A normal record has r=2.6 and a 1px stroke, so its visible outer edge is
-  // 3.1 units from the centre. Selected marks render after relations and mask
+  // A normal record has r=3.5 and a 1px stroke, so its visible outer edge is
+  // 4 units from the centre. Selected marks render after relations and mask
   // the covered part themselves; reserving their larger radius here would
   // leave an obvious broken gap around every unselected hollow circle.
-  if (triangle) return arrowhead ? 5.8 : 6;
-  return 3.1;
+  if (triangle) return arrowhead ? 7.2 : 6.8;
+  return 4;
 }
 
 function insetPoint(point, toward, distance) {
@@ -1244,9 +1255,9 @@ function renderOffAxis(parent, layout, selectedItem, selectionFocus, handlers) {
         class: `evolution-offaxis-event${isSelected ? " is-selected" : ""}`
           + `${dimmed ? " is-dimmed" : ""}`,
       });
-      // 与主车道普通记载圆点同尺寸（未选中 2.6 / 选中 4.2）。
+      // 与主车道普通记载圆点保持同一视觉尺寸。
       group.appendChild(svgElement("circle", {
-        cx: event.x, cy: event.y, r: isSelected ? 4.2 : 2.6,
+        cx: event.x, cy: event.y, r: evolutionEventIconSize("record", isSelected),
         fill: isSelected ? COLORS.selected : COLORS.paper,
         stroke: bucket === "unresolved" ? COLORS.selected : COLORS.line,
         "stroke-width": 1,

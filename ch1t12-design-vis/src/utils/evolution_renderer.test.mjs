@@ -1,6 +1,24 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { evolutionLaneTitleMetrics } from "../renderers/evolution_renderer.js";
+import {
+  evolutionEventIconSize,
+  evolutionLaneTitleMetrics,
+} from "../renderers/evolution_renderer.js";
+
+describe("evolutionEventIconSize", () => {
+  it("主图未选中事件与图例使用同一尺寸", () => {
+    assert.equal(evolutionEventIconSize("record"), 3.5);
+    assert.equal(evolutionEventIconSize("establish"), 6.2);
+    assert.equal(evolutionEventIconSize("abolish"), 6.2);
+    assert.equal(evolutionEventIconSize("affiliation_change"), 6);
+  });
+
+  it("选中态只在图例基准上增加一级强调", () => {
+    assert.equal(evolutionEventIconSize("record", true), 4.5);
+    assert.equal(evolutionEventIconSize("establish", true), 7.2);
+    assert.equal(evolutionEventIconSize("affiliation_change", true), 7);
+  });
+});
 
 describe("evolutionLaneTitleMetrics", () => {
   it("14px 竖排实体名逐字分开且仍限制在签条高度内", () => {
