@@ -503,7 +503,7 @@ function renderEvolutionLegend(parent, layout) {
   // The legend shares the title band with the view heading; the year axis
   // immediately above keeps the top edge busy, so the legend must sit below it
   // and left of the lane pager to avoid colliding with either.
-  const x = Math.max(plot.x + 260, plot.right - 990);
+  const x = Math.max(plot.x + 160, plot.right - 1100);
   const rowY = 185;
   appendText(group, "图例", {
     x,
