@@ -83,12 +83,72 @@ export function evolutionLaneIdentityLayout(entityType, height, labelX, labelMax
   };
 }
 
+export function evolutionIdentityGlyphMetrics(entityType, height, centerX, y = 0) {
+  const template = evolutionLaneIdentityTemplate(entityType);
+  const scale = height / template.bounds.height;
+  const width = template.bounds.width * scale;
+  const x = centerX - width / 2;
+  const bodyTop = entityType === "官职"
+    ? y + (template.body.y - template.bounds.y) * scale
+    : y + 5 * scale;
+  const bodyBottom = entityType === "官职"
+    ? y + (template.body.y + template.body.height - template.bounds.y) * scale
+    : y + height;
+  return {
+    template,
+    scale,
+    width,
+    x,
+    y,
+    centerX,
+    bodyTop,
+    bodyBottom,
+  };
+}
+
 function svgElement(tag, attrs = {}) {
   const element = document.createElementNS(SVG_NS, tag);
   for (const [name, value] of Object.entries(attrs)) {
     if (value != null) element.setAttribute(name, String(value));
   }
   return element;
+}
+
+function appendIdentityGlyph(parent, entityType, { height, centerX, y, selected }) {
+  const metrics = evolutionIdentityGlyphMetrics(entityType, height, centerX, y);
+  const { template, scale, x } = metrics;
+  const sourceTransform = `translate(${x} ${y}) scale(${scale}) translate(${-template.bounds.x} ${-template.bounds.y})`;
+  if (entityType === "官职") {
+    parent.appendChild(svgElement("rect", {
+      ...template.body,
+      transform: sourceTransform,
+      fill: COLORS.ink,
+      "fill-opacity": selected ? 0.17 : 0.1,
+      stroke: selected ? COLORS.selected : COLORS.olive,
+      "stroke-width": selected ? template.bodyStrokeWidth * 1.8 : template.bodyStrokeWidth,
+      "pointer-events": "none",
+    }));
+    parent.appendChild(svgElement("polygon", {
+      points: template.capPoints,
+      transform: sourceTransform,
+      fill: "#878089",
+      "fill-opacity": selected ? 0.82 : 0.6,
+      stroke: selected ? COLORS.selected : COLORS.line,
+      "stroke-width": selected ? template.capStrokeWidth * 1.45 : template.capStrokeWidth,
+      "pointer-events": "none",
+    }));
+  } else {
+    parent.appendChild(svgElement("polygon", {
+      points: template.points,
+      transform: sourceTransform,
+      fill: selected ? COLORS.ink : "none",
+      "fill-opacity": selected ? 0.12 : 0,
+      stroke: selected ? COLORS.selected : COLORS.line,
+      "stroke-width": selected ? template.strokeWidth * 1.35 : template.strokeWidth,
+      "pointer-events": "none",
+    }));
+  }
+  return metrics;
 }
 
 function appendText(parent, text, attrs = {}) {
@@ -224,25 +284,36 @@ function selectorNode(parent, entity, index, selected, removable, handlers) {
   const width = 46;
   const height = 92;
   const group = svgElement("g", {
-    class: `evolution-selector-node${selected ? " is-selected" : ""}`,
+    class: `evolution-selector-node evolution-selector-node--${entity.type === "官职" ? "official" : "institution"}${selected ? " is-selected" : ""}`,
     transform: `translate(${x} ${y})`,
     "data-entity-id": entity.id,
+    "data-entity-type": entity.type,
   });
-  group.appendChild(svgElement("path", {
-    d: `M0 7H5V0H${width - 5}V7H${width}V${height}H0Z`,
-    fill: selected ? COLORS.ink : "none",
-    "fill-opacity": selected ? 0.12 : 0,
-    stroke: COLORS.line,
-    "stroke-width": selected ? 1.35 : 0.85,
+  group.appendChild(svgElement("rect", {
+    x: 0,
+    y: 0,
+    width,
+    height,
+    fill: "transparent",
+    "pointer-events": "all",
   }));
-  appendVerticalText(group, entity.title, {
-    x: width / 2,
-    y: 14,
+  const glyph = appendIdentityGlyph(group, entity.type, {
+    height,
+    centerX: width / 2,
+    y: 0,
+    selected,
+  });
+  const displayTitle = shortened(entity.title, 6);
+  const textPitch = 12.5;
+  const textHeight = Math.max(0, (Array.from(displayTitle).length - 1) * textPitch);
+  appendVerticalText(group, displayTitle, {
+    x: glyph.centerX,
+    y: glyph.bodyTop + (glyph.bodyBottom - glyph.bodyTop - textHeight) / 2,
     class: "evolution-selector-node-label",
     "text-anchor": "middle",
   }, {
     maxChars: 6,
-    pitch: 12.5,
+    pitch: textPitch,
   });
   addTitle(group, `${entity.title}（${entity.type}）`);
   makeInteractive(group, `选择${entity.title}`, () => handlers.onSelectEntity?.(entity.id));
@@ -666,13 +737,13 @@ export function laneAnomalySummary(anomalies, maxChars = Number.POSITIVE_INFINIT
 
 function renderLaneLabel(parent, lane, selected, onSelectEntity, lanePitch) {
   const height = Math.max(42, Math.min(102, lanePitch ? lanePitch - 12 : 102));
-  const template = evolutionLaneIdentityTemplate(lane.type);
-  const { scale, width, x } = evolutionLaneIdentityLayout(
+  const laneLayout = evolutionLaneIdentityLayout(
     lane.type,
     height,
     lane.labelX,
     lane.labelMaxWidth,
   );
+  const { width, x } = laneLayout;
   const y = lane.y - height / 2;
   const group = svgElement("g", {
     class: `evolution-lane-label evolution-lane-label--${lane.type === "官职" ? "official" : "institution"}${selected ? " is-selected" : ""}`,
@@ -680,44 +751,13 @@ function renderLaneLabel(parent, lane, selected, onSelectEntity, lanePitch) {
     "data-entity-type": lane.type,
   });
 
-  const sourceTransform = `translate(${x} ${y}) scale(${scale}) translate(${-template.bounds.x} ${-template.bounds.y})`;
-  if (lane.type === "官职") {
-    group.appendChild(svgElement("rect", {
-      ...template.body,
-      transform: sourceTransform,
-      fill: COLORS.ink,
-      "fill-opacity": selected ? 0.17 : 0.1,
-      stroke: selected ? COLORS.selected : COLORS.olive,
-      "stroke-width": selected ? template.bodyStrokeWidth * 1.8 : template.bodyStrokeWidth,
-      "pointer-events": "none",
-    }));
-    group.appendChild(svgElement("polygon", {
-      points: template.capPoints,
-      transform: sourceTransform,
-      fill: "#878089",
-      "fill-opacity": selected ? 0.82 : 0.6,
-      stroke: selected ? COLORS.selected : COLORS.line,
-      "stroke-width": selected ? template.capStrokeWidth * 1.45 : template.capStrokeWidth,
-      "pointer-events": "none",
-    }));
-  } else {
-    group.appendChild(svgElement("polygon", {
-      points: template.points,
-      transform: sourceTransform,
-      fill: selected ? COLORS.ink : "none",
-      "fill-opacity": selected ? 0.12 : 0,
-      stroke: selected ? COLORS.selected : COLORS.line,
-      "stroke-width": selected ? template.strokeWidth * 1.35 : template.strokeWidth,
-      "pointer-events": "none",
-    }));
-  }
-
-  const bodyTop = lane.type === "官职"
-    ? y + (template.body.y - template.bounds.y) * scale
-    : y + 5 * scale;
-  const bodyBottom = lane.type === "官职"
-    ? y + (template.body.y + template.body.height - template.bounds.y) * scale
-    : y + height;
+  const glyph = appendIdentityGlyph(group, lane.type, {
+    height,
+    centerX: laneLayout.centerX,
+    y,
+    selected,
+  });
+  const { bodyTop, bodyBottom } = glyph;
   const { pitch: textPitch, maxChars } = evolutionLaneTitleMetrics(
     bodyTop, bodyBottom,
   );

@@ -3,6 +3,8 @@ import { describe, it } from "node:test";
 import {
   evolutionEventIconSize,
   evolutionEndpointClearance,
+  evolutionIdentityGlyphMetrics,
+  evolutionLaneIdentityLayout,
   relationPath,
   evolutionLaneTitleMetrics,
 } from "../renderers/evolution_renderer.js";
@@ -38,6 +40,29 @@ describe("evolutionLaneTitleMetrics", () => {
 
   it("短签条减少可见字数而不压缩字距", () => {
     assert.deepEqual(evolutionLaneTitleMetrics(100, 140), { pitch: 16, maxChars: 3 });
+  });
+});
+
+describe("evolution identity glyphs", () => {
+  it("左侧选择器中的机构和官职图标使用同一中心与同一高度", () => {
+    const institution = evolutionIdentityGlyphMetrics("机构", 92, 23, 0);
+    const official = evolutionIdentityGlyphMetrics("官职", 92, 23, 0);
+
+    assert.equal(institution.x + institution.width / 2, 23);
+    assert.equal(official.x + official.width / 2, 23);
+    assert.ok(Math.abs(institution.bodyBottom - 92) < 1e-9);
+    assert.ok(Math.abs(official.bodyBottom - 92) < 1e-9);
+    assert.ok(official.bodyTop > institution.bodyTop);
+  });
+
+  it("左侧选择器与右侧轨道共享完全相同的 SVG 尺寸计算", () => {
+    for (const entityType of ["机构", "官职"]) {
+      const lane = evolutionLaneIdentityLayout(entityType, 92, 0, 54);
+      const glyph = evolutionIdentityGlyphMetrics(entityType, 92, lane.centerX, 0);
+      assert.equal(glyph.scale, lane.scale);
+      assert.equal(glyph.width, lane.width);
+      assert.equal(glyph.x, lane.x);
+    }
   });
 });
 
