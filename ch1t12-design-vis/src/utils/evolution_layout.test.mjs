@@ -122,7 +122,7 @@ describe("layoutEvolutionModel", () => {
       for (let otherIndex = index + 1; otherIndex < events.length; otherIndex += 1) {
         const deltaX = Math.abs(events[index].displayX - events[otherIndex].displayX);
         const deltaY = Math.abs(events[index].displayY - events[otherIndex].displayY);
-        assert.ok(deltaX >= 16 || deltaY >= 16);
+        assert.ok(deltaX >= 20 || deltaY >= 20);
       }
     }
   });
@@ -175,7 +175,7 @@ describe("layoutEvolutionModel", () => {
       for (let otherIndex = index + 1; otherIndex < denseEvents.length; otherIndex += 1) {
         const deltaX = Math.abs(denseEvents[index].displayX - denseEvents[otherIndex].displayX);
         const deltaY = Math.abs(denseEvents[index].displayY - denseEvents[otherIndex].displayY);
-        assert.ok(deltaX >= 16 || deltaY >= 16);
+        assert.ok(deltaX >= 20 || deltaY >= 20);
       }
     }
     assert.equal(sparseEvent.displayX, sparseEvent.baseX);

@@ -22,9 +22,9 @@ const COLORS = {
 
 export function evolutionEventIconSize(iconType, selected = false) {
   const emphasis = selected ? 1 : 0;
-  if (iconType === "affiliation_change") return 6 + emphasis;
-  if (iconType === "establish" || iconType === "abolish") return 6.2 + emphasis;
-  return 3.5 + emphasis;
+  if (iconType === "affiliation_change") return 7 + emphasis;
+  if (iconType === "establish" || iconType === "abolish") return 7.2 + emphasis;
+  return 4.2 + emphasis;
 }
 
 /**
@@ -844,7 +844,7 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     if (!degenerate) {
       // The icon represents the whole fuzzy interval, not its upper bound.
       // Keep the bracket detached and point its centre back to a displaced icon.
-      const spanY = y + 14;
+      const spanY = y + 16;
       const middleX = (startX + endX) / 2;
       group.appendChild(svgElement("line", {
         class: "evolution-event-bounded-span",
@@ -855,22 +855,22 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
       }));
       group.appendChild(svgElement("path", {
         class: "evolution-event-bounded-span",
-        d: `M${startX} ${y + 8.5}V${spanY}M${endX} ${y + 8.5}V${spanY}`,
+        d: `M${startX} ${y + 9.5}V${spanY}M${endX} ${y + 9.5}V${spanY}`,
         fill: "none",
         stroke: COLORS.olive,
         "stroke-width": 1.1,
       }));
       group.appendChild(svgElement("line", {
         class: "evolution-event-range-link",
-        x1: x, y1: y + 7.8, x2: middleX, y2: spanY - 2,
+        x1: x, y1: y + 8.8, x2: middleX, y2: spanY - 2,
         stroke: COLORS.olive,
         "stroke-width": 0.65,
         "stroke-opacity": 0.78,
         "pointer-events": "none",
       }));
       group.appendChild(svgElement("rect", {
-        x: Math.min(startX, endX), y: y + 8,
-        width: Math.max(3, Math.abs(endX - startX)), height: 6,
+        x: Math.min(startX, endX), y: y + 9,
+        width: Math.max(3, Math.abs(endX - startX)), height: 7,
         fill: "transparent", "pointer-events": "all",
       }));
     }
@@ -879,7 +879,7 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     const startX = event.rangeStartX ?? event.baseX;
     const endX = event.rangeEndX ?? event.baseX;
     group.appendChild(svgElement("path", {
-      d: `M${startX} ${y - 15}V${y - 23}H${endX}V${y - 15}`,
+      d: `M${startX} ${y - 17}V${y - 26}H${endX}V${y - 17}`,
       fill: "none", stroke: COLORS.olive, "stroke-width": 0.8,
     }));
     // The mark describes the complete period, so its leader points to the
@@ -887,7 +887,7 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
     const middleX = (startX + endX) / 2;
     group.appendChild(svgElement("line", {
       class: "evolution-event-range-link",
-      x1: x, y1: y - 7.8, x2: middleX, y2: y - 13.5,
+      x1: x, y1: y - 8.8, x2: middleX, y2: y - 15.5,
       stroke: COLORS.olive, "stroke-width": 0.65, "stroke-opacity": 0.85,
       "pointer-events": "none",
     }));
@@ -939,16 +939,16 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
 
 function endpointClearance(point, arrowhead = false) {
   if (point?.timepointId == null) return 0;
-  if (point.iconType === "affiliation_change") return 6.6;
+  if (point.iconType === "affiliation_change") return 7.6;
   const triangle = ["establish", "abolish"].includes(point.iconType);
   // The endpoint is the arrow tip / relation stroke endpoint, so clearance
   // should follow the visible glyph edge instead of leaving a large dead gap.
-  // A normal record has r=3.5 and a 1px stroke, so its visible outer edge is
-  // 4 units from the centre. Selected marks render after relations and mask
+  // A normal record has r=4.2 and a 1px stroke, so its visible outer edge is
+  // 4.7 units from the centre. Selected marks render after relations and mask
   // the covered part themselves; reserving their larger radius here would
   // leave an obvious broken gap around every unselected hollow circle.
-  if (triangle) return arrowhead ? 7.2 : 6.8;
-  return 4;
+  if (triangle) return arrowhead ? 8.2 : 7.8;
+  return 4.7;
 }
 
 function insetPoint(point, toward, distance) {

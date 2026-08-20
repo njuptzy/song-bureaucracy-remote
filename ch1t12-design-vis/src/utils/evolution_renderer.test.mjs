@@ -7,16 +7,16 @@ import {
 
 describe("evolutionEventIconSize", () => {
   it("主图未选中事件与图例使用同一尺寸", () => {
-    assert.equal(evolutionEventIconSize("record"), 3.5);
-    assert.equal(evolutionEventIconSize("establish"), 6.2);
-    assert.equal(evolutionEventIconSize("abolish"), 6.2);
-    assert.equal(evolutionEventIconSize("affiliation_change"), 6);
+    assert.equal(evolutionEventIconSize("record"), 4.2);
+    assert.equal(evolutionEventIconSize("establish"), 7.2);
+    assert.equal(evolutionEventIconSize("abolish"), 7.2);
+    assert.equal(evolutionEventIconSize("affiliation_change"), 7);
   });
 
   it("选中态只在图例基准上增加一级强调", () => {
-    assert.equal(evolutionEventIconSize("record", true), 4.5);
-    assert.equal(evolutionEventIconSize("establish", true), 7.2);
-    assert.equal(evolutionEventIconSize("affiliation_change", true), 7);
+    assert.equal(evolutionEventIconSize("record", true), 5.2);
+    assert.equal(evolutionEventIconSize("establish", true), 8.2);
+    assert.equal(evolutionEventIconSize("affiliation_change", true), 8);
   });
 });
 
