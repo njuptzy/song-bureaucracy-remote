@@ -937,18 +937,70 @@ function renderEventMark(parent, event, selected, dimmed, handlers) {
   parent.appendChild(group);
 }
 
-function endpointClearance(point, arrowhead = false) {
+function cross(first, second) {
+  return first.x * second.y - first.y * second.x;
+}
+
+function rayPolygonDistance(direction, vertices) {
+  let nearest = Number.POSITIVE_INFINITY;
+  for (let index = 0; index < vertices.length; index += 1) {
+    const start = vertices[index];
+    const end = vertices[(index + 1) % vertices.length];
+    const edge = { x: end.x - start.x, y: end.y - start.y };
+    const denominator = cross(direction, edge);
+    if (Math.abs(denominator) < 1e-9) continue;
+    const distance = cross(start, edge) / denominator;
+    const segmentPosition = cross(start, direction) / denominator;
+    if (distance >= 0 && segmentPosition >= -1e-9 && segmentPosition <= 1 + 1e-9) {
+      nearest = Math.min(nearest, distance);
+    }
+  }
+  return Number.isFinite(nearest) ? nearest : 0;
+}
+
+/**
+ * Distance from an event centre to the visible outer edge in a given
+ * direction. The enlarged diamond and triangle marks do not have a constant
+ * radius, so a fixed inset makes diagonal relations stop too early or too
+ * late. This uses the actual glyph outlines used by renderEventMark and adds
+ * half of the corresponding stroke width.
+ */
+export function evolutionEndpointClearance(point, toward, arrowhead = false) {
   if (point?.timepointId == null) return 0;
-  if (point.iconType === "affiliation_change") return 7.6;
-  const triangle = ["establish", "abolish"].includes(point.iconType);
-  // The endpoint is the arrow tip / relation stroke endpoint, so clearance
-  // should follow the visible glyph edge instead of leaving a large dead gap.
-  // A normal record has r=4.2 and a 1px stroke, so its visible outer edge is
-  // 4.7 units from the centre. Selected marks render after relations and mask
-  // the covered part themselves; reserving their larger radius here would
-  // leave an obvious broken gap around every unselected hollow circle.
-  if (triangle) return arrowhead ? 8.2 : 7.8;
-  return 4.7;
+  const deltaX = Number(toward?.x) - Number(point.x);
+  const deltaY = Number(toward?.y) - Number(point.y);
+  const length = Math.hypot(deltaX, deltaY);
+  if (!length) return 0;
+  const direction = { x: deltaX / length, y: deltaY / length };
+  const size = evolutionEventIconSize(point.iconType || "record");
+  let distance;
+  let strokeWidth;
+  if (point.iconType === "affiliation_change") {
+    distance = rayPolygonDistance(direction, [
+      { x: 0, y: -size },
+      { x: size, y: 0 },
+      { x: 0, y: size },
+      { x: -size, y: 0 },
+    ]);
+    strokeWidth = 1.1;
+  } else if (["establish", "abolish"].includes(point.iconType)) {
+    const up = point.iconType === "establish";
+    const apexY = up ? -size : size;
+    const baseY = up ? size * (5 / 6.2) : -size * (5 / 6.2);
+    distance = rayPolygonDistance(direction, [
+      { x: 0, y: apexY },
+      { x: size, y: baseY },
+      { x: -size, y: baseY },
+    ]);
+    strokeWidth = 1;
+  } else {
+    distance = size;
+    strokeWidth = 1;
+  }
+  // Selected marks render after relations and mask the covered part. Do not
+  // reserve their extra emphasis radius here, or every unselected line gets a
+  // visible gap around the event glyph.
+  return Math.max(0, distance + strokeWidth / 2);
 }
 
 function insetPoint(point, toward, distance) {
@@ -980,8 +1032,16 @@ export function relationRouteOptions(relation, source, target) {
 export function relationPath(source, target, options = {}) {
   // Relations terminate outside the event glyph. Drawing to its center makes
   // the event triangle cover the real marker and read as an oversized arrow.
-  const start = insetPoint(source, target, endpointClearance(source));
-  const end = insetPoint(target, source, endpointClearance(target, true));
+  const start = insetPoint(
+    source,
+    target,
+    evolutionEndpointClearance(source, target),
+  );
+  const end = insetPoint(
+    target,
+    source,
+    evolutionEndpointClearance(target, source, true),
+  );
   const deltaY = end.y - start.y;
   if (Math.abs(deltaY) < 1) {
     const lift = start.y > 470 ? -28 : 28;
@@ -1323,7 +1383,11 @@ function renderFanGroup(parent, fan, selectedRelationKey, focusActive, handlers)
     if (fan.direction === "out") {
       // Split: branch leaves the hub and ends with an arrowhead on each
       // target event mark — N arrowheads make the 1→N reading explicit.
-      const target = insetPoint(spoke, hub, endpointClearance(spoke, true));
+      const target = insetPoint(
+        spoke,
+        hub,
+        evolutionEndpointClearance(spoke, hub, true),
+      );
       const d = sameColumn
         ? branchPath(hub, target, bow)
         : `M${trunkX} ${target.y}L${target.x} ${target.y}`;
@@ -1340,7 +1404,11 @@ function renderFanGroup(parent, fan, selectedRelationKey, focusActive, handlers)
       }
     } else {
       // Merge: one branch per source lane converging into the hub.
-      const source = insetPoint(spoke, hub, endpointClearance(spoke));
+      const source = insetPoint(
+        spoke,
+        hub,
+        evolutionEndpointClearance(spoke, hub),
+      );
       const d = sameColumn
         ? branchPath(source, hub, bow)
         : `M${source.x} ${source.y}L${trunkX} ${source.y}`;
@@ -1369,7 +1437,11 @@ function renderFanGroup(parent, fan, selectedRelationKey, focusActive, handlers)
   if (fan.direction === "in") {
     // Fan-in converges into the hub: single arrowhead at the shared target.
     const approach = { x: trunkX, y: hub.y + travel * 16 };
-    const target = insetPoint(hub, approach, endpointClearance(hub, true));
+    const target = insetPoint(
+      hub,
+      approach,
+      evolutionEndpointClearance(hub, approach, true),
+    );
     group.appendChild(svgElement("path", {
       d: `M${approach.x} ${approach.y}L${target.x} ${target.y}`,
       fill: "none", stroke: color, "stroke-width": width,
