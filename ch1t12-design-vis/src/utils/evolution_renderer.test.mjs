@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  EVOLUTION_SELECTOR_SLOT_STEP,
   evolutionEventIconSize,
   evolutionEndpointClearance,
   evolutionIdentityGlyphMetrics,
@@ -44,6 +45,11 @@ describe("evolutionLaneTitleMetrics", () => {
 });
 
 describe("evolution identity glyphs", () => {
+  it("选择器槽位只保留删除按钮所需的最小安全间距", () => {
+    assert.equal(EVOLUTION_SELECTOR_SLOT_STEP, 52);
+    assert.equal(EVOLUTION_SELECTOR_SLOT_STEP - 46, 6);
+  });
+
   it("左侧选择器中的机构和官职图标使用同一中心与同一高度", () => {
     const institution = evolutionIdentityGlyphMetrics("机构", 92, 23, 0);
     const official = evolutionIdentityGlyphMetrics("官职", 92, 23, 0);

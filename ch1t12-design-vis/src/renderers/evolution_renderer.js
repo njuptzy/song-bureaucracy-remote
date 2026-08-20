@@ -59,6 +59,8 @@ const LANE_IDENTITY_TEMPLATES = Object.freeze({
   }),
 });
 
+export const EVOLUTION_SELECTOR_SLOT_STEP = 52;
+
 export function evolutionLaneIdentityTemplate(entityType) {
   return entityType === "官职"
     ? LANE_IDENTITY_TEMPLATES.official
@@ -114,41 +116,59 @@ function svgElement(tag, attrs = {}) {
   return element;
 }
 
-function appendIdentityGlyph(parent, entityType, { height, centerX, y, selected }) {
+function appendIdentityGlyph(parent, entityType, {
+  height,
+  centerX,
+  y,
+  selected,
+  dashed = false,
+  widthOverride = null,
+}) {
   const metrics = evolutionIdentityGlyphMetrics(entityType, height, centerX, y);
   const { template, scale, x } = metrics;
-  const sourceTransform = `translate(${x} ${y}) scale(${scale}) translate(${-template.bounds.x} ${-template.bounds.y})`;
+  const glyphWidth = Number.isFinite(widthOverride) ? widthOverride : metrics.width;
+  const glyphX = centerX - glyphWidth / 2;
+  const sourceTransform = Number.isFinite(widthOverride)
+    ? `translate(${glyphX} ${y}) scale(${glyphWidth / template.bounds.width} ${scale}) translate(${-template.bounds.x} ${-template.bounds.y})`
+    : `translate(${x} ${y}) scale(${scale}) translate(${-template.bounds.x} ${-template.bounds.y})`;
   if (entityType === "官职") {
     parent.appendChild(svgElement("rect", {
       ...template.body,
       transform: sourceTransform,
-      fill: COLORS.ink,
-      "fill-opacity": selected ? 0.17 : 0.1,
-      stroke: selected ? COLORS.selected : COLORS.olive,
-      "stroke-width": selected ? template.bodyStrokeWidth * 1.8 : template.bodyStrokeWidth,
+      fill: dashed ? "none" : COLORS.ink,
+      "fill-opacity": dashed ? 0 : (selected ? 0.17 : 0.1),
+      stroke: dashed ? COLORS.olive : (selected ? COLORS.selected : COLORS.olive),
+      "stroke-width": dashed
+        ? 0.85
+        : (selected ? template.bodyStrokeWidth * 1.8 : template.bodyStrokeWidth),
+      ...(dashed ? { "stroke-dasharray": "3 3", "vector-effect": "non-scaling-stroke" } : {}),
       "pointer-events": "none",
     }));
     parent.appendChild(svgElement("polygon", {
       points: template.capPoints,
       transform: sourceTransform,
-      fill: "#878089",
-      "fill-opacity": selected ? 0.82 : 0.6,
-      stroke: selected ? COLORS.selected : COLORS.line,
-      "stroke-width": selected ? template.capStrokeWidth * 1.45 : template.capStrokeWidth,
+      fill: dashed ? "none" : "#878089",
+      "fill-opacity": dashed ? 0 : (selected ? 0.82 : 0.6),
+      stroke: dashed ? COLORS.olive : (selected ? COLORS.selected : COLORS.line),
+      "stroke-width": dashed
+        ? 0.85
+        : (selected ? template.capStrokeWidth * 1.45 : template.capStrokeWidth),
+      ...(dashed ? { "stroke-dasharray": "3 3", "vector-effect": "non-scaling-stroke" } : {}),
       "pointer-events": "none",
     }));
   } else {
     parent.appendChild(svgElement("polygon", {
       points: template.points,
       transform: sourceTransform,
-      fill: selected ? COLORS.ink : "none",
-      "fill-opacity": selected ? 0.12 : 0,
-      stroke: selected ? COLORS.selected : COLORS.line,
-      "stroke-width": selected ? template.strokeWidth * 1.35 : template.strokeWidth,
+      fill: dashed ? "none" : (selected ? COLORS.ink : "none"),
+      "fill-opacity": dashed ? 0 : (selected ? 0.12 : 0),
+      stroke: dashed ? COLORS.olive : (selected ? COLORS.selected : COLORS.line),
+      "stroke-width": dashed ? 0.85 : (selected ? template.strokeWidth * 1.35 : template.strokeWidth),
+      ...(dashed ? { "stroke-dasharray": "3 3", "vector-effect": "non-scaling-stroke" } : {}),
       "pointer-events": "none",
     }));
   }
-  return metrics;
+  return { ...metrics, x: glyphX, width: glyphWidth };
 }
 
 function appendText(parent, text, attrs = {}) {
@@ -279,7 +299,7 @@ function renderModeChoice(parent, { x, label, active, onActivate }) {
 }
 
 function selectorNode(parent, entity, index, selected, removable, handlers) {
-  const x = 83 + index * 62;
+  const x = 83 + index * EVOLUTION_SELECTOR_SLOT_STEP;
   const y = 367;
   const width = 46;
   const height = 92;
@@ -337,18 +357,19 @@ function selectorNode(parent, entity, index, selected, removable, handlers) {
 }
 
 function renderAddNode(parent, index, onActivate) {
-  const x = 83 + index * 62;
+  const x = 83 + index * EVOLUTION_SELECTOR_SLOT_STEP;
   const group = svgElement("g", {
     class: "evolution-selector-add",
     transform: `translate(${x} 367)`,
   });
-  group.appendChild(svgElement("path", {
-    d: "M0 7H5V0H41V7H46V92H0Z",
-    fill: "none",
-    stroke: COLORS.olive,
-    "stroke-width": 0.85,
-    "stroke-dasharray": "3 3",
-  }));
+  appendIdentityGlyph(group, "机构", {
+    height: 92,
+    centerX: 23,
+    y: 0,
+    selected: false,
+    dashed: true,
+    widthOverride: 46,
+  });
   group.appendChild(svgElement("path", {
     d: "M17 38H29M23 32V44",
     fill: "none",
